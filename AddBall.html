@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<script type="text/javascript" src="./js/Ball.js"></script>
+
+	<style type="text/css">
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	/*#wrapper{
+		width: 100%;
+		height: 100%;
+		margin: 50px auto;
+		margin: 0;
+		padding: 0;
+	}*/
+	canvas{
+		display: block;
+	}
+	</style>
+</head>
+<body style="height:100%;">
+	<div id="wrapper">
+		<canvas id="myCanvas">
+			Your browser does not support the canvas element.
+		</canvas>
+	</div>
+	
+	<script type="text/javascript">
+	var canvas = document.getElementById("myCanvas");
+	window.onresize=resizeCanvas;
+        function resizeCanvas(){
+            canvas.width=window.innerWidth;
+            canvas.height=window.innerHeight;
+        }
+        resizeCanvas();  
+	var ctx = canvas.getContext("2d");
+	//设置球的圆心
+	var ballX = canvas.width/2;
+	var ballY = canvas.height/4;
+	//准备一个数组,用来放颜色
+	var balls = [];
+	var colors = ["#6495ED","#FFB6C1","#F0E68C","#FA8072","#7FFFD4","#E0FFFF"];
+	canvas.onmousemove = function(event){
+		var x = event.offsetX;
+		var y = event.offsetY;
+		var ball = new Ball({
+			x : x,
+			y : y,
+			radius : parseInt(Math.random()*30),
+			fillStyle : colors[parseInt(Math.random()*colors.length)],
+			speed : parseInt(Math.random()*6-2)
+		});
+		balls.push(ball);
+	}
+	// var ball2 = new Ball({
+	// 	x : canvas.width/2,
+	// 	y : canvas.height/2,
+	// 	radius : 20,
+	// 	startAngle : 0,
+	// 	endAngle : 2*Math.PI,
+	// 	anticlockwise : false,
+	// 	strokeStyle : "gray",
+	// 	fillStyle : "orange",
+	// 	// lineWidth :2,
+	// 	speed : 4
+	// });
+	//准备一个数组,把创建的小球全部放到数组中,方便移除
+	
+	
+	//设定帧数
+	var fps = 10;
+	//要让球动起来,一般要让一个东西动起来,要设置一个定时器
+	setInterval(function(){
+		clearCanvas();
+		for(var i = 0; i < balls.length; i++){
+			balls[i].render(ctx);
+		}
+		for(var i = 0; i < balls.length; i++){
+			balls[i].update();
+		}
+
+	}, 800/fps);
+	//设置一个清空画布的函数
+	function clearCanvas(){
+		canvas.width = canvas.width;
+		canvas.height = canvas.height;
+
+	}
+
+	</script>
+</body>
+</html>
